@@ -1,0 +1,41 @@
+{
+  "name": "xmpp-ftw-register",
+  "version": "0.0.1",
+  "description": "In-band registration (XEP-0077) plugin for XMPP-FTW",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "./node_modules/.bin/mocha -R spec --recursive ./test/lib"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/lloydwatkin/xmpp-ftw-register.git"
+  },
+  "keywords": [
+    "register",
+    "xep-0077",
+    "json",
+    "xmpp",
+    "xml",
+    "translate"
+  ],
+  "author": "Lloyd Watkin <lloyd@evilprofesssor.co.uk>",
+  "license": "Apache 2.0",
+  "readmeFilename": "README.md",
+  "bugs": {
+    "url": "https://github.com/lloydwatkin/xmpp-ftw-register/issues"
+  },
+  "dependencies": {
+    "ltx": "*"
+  },
+  "devDependencies": {
+    "mocha": "~1.8.1",
+    "should": "~1.2.2",
+    "xmpp-ftw": "*"
+  },
+  "peerDependencies": {
+    "xmpp-ftw": "0.x"
+  }
+}
