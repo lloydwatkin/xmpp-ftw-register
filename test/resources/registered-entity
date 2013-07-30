@@ -1,0 +1,8 @@
+<iq type="result" id="1">
+  <query xmlns="jabber:iq:register">
+    <username>romeo</username>
+    <password>love-juliet</password>
+    <email>romeo@shakespeare.lit</email>
+    <registered/>
+  </query>
+</iq>

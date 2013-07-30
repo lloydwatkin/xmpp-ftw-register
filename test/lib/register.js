@@ -86,8 +86,8 @@ describe('Register', function() {
                 stanza.attrs.to.should.equal(request.to)
                 stanza.attrs.id.should.exist
                 stanza.attrs.type.should.equal('get')
-                var register = stanza.getChild('register', register.NS)
-                register.should.exist
+                stanza.getChild('register', register.NS)
+                    .should.exist
                 done()
             })
             socket.emit(
@@ -123,7 +123,33 @@ describe('Register', function() {
             })
             var callback = function(error, data) {
                 should.not.exist(error)
-                done('not complete')
+                data.instructions.should.equal('These are instructions')
+                data.email.should.be.true
+                data.username.should.be.true
+                data.email.should.be.true
+                done()
+            }
+            var request = {
+                to: 'shakespeare.lit'
+            }
+            socket.emit('xmpp.register.get', request, callback)
+        })
+
+
+        it('Handles registered entity', function(done) {
+            xmpp.once('stanza', function(stanza) {
+                manager.makeCallback(
+                    helper.getStanza('registered-entity')
+                )
+            })
+            var callback = function(error, data) {
+                should.not.exist(error)
+                should.not.exist(data.instructions)
+                data.email.should.equal('romeo@shakespeare.lit')
+                data.username.should.equal('romeo')
+                data.email.should.equal('love-juliet')
+                data.registered.should.be.true
+                done()
             }
             var request = {
                 to: 'shakespeare.lit'
