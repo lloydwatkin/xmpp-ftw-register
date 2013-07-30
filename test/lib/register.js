@@ -77,6 +77,60 @@ describe('Register', function() {
             )
         })
 
+        it('Sends expected stanza', function(done) {
+            var request = {
+                to: 'shakespeare.lit'
+            }
+            xmpp.once('stanza', function(stanza) {
+                stanza.is('iq').should.be.true
+                stanza.attrs.to.should.equal(request.to)
+                stanza.attrs.id.should.exist
+                stanza.attrs.type.should.equal('get')
+                var register = stanza.getChild('register', register.NS)
+                register.should.exist
+                done()
+            })
+            socket.emit(
+                'xmpp.register.get',
+                request,
+                function() {}
+            )
+        })
+
+        it('Handles error response stanza', function(done) {
+            xmpp.once('stanza', function(stanza) {
+                manager.makeCallback(helper.getStanza('iq-error'))
+            })
+            var callback = function(error, success) {
+                should.not.exist(success)
+                error.should.eql({
+                    type: 'cancel',
+                    condition: 'error-condition'
+                })
+                done()
+            }
+            var request = {
+                to: 'shakespeare.lit'
+            }
+            socket.emit('xmpp.register.get', request, callback)
+        })
+
+        it('Returns registration information', function(done) {
+            xmpp.once('stanza', function(stanza) {
+                manager.makeCallback(
+                    helper.getStanza('registration-information')
+                )
+            })
+            var callback = function(error, data) {
+                should.not.exist(error)
+                done('not complete')
+            }
+            var request = {
+                to: 'shakespeare.lit'
+            }
+            socket.emit('xmpp.register.get', request, callback)
+        })
+
     })
 
 })
