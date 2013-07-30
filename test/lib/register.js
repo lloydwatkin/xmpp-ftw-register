@@ -147,7 +147,7 @@ describe('Register', function() {
                 should.not.exist(data.instructions)
                 data.email.should.equal('romeo@shakespeare.lit')
                 data.username.should.equal('romeo')
-                data.email.should.equal('love-juliet')
+                data.password.should.equal('love-juliet')
                 data.registered.should.be.true
                 done()
             }
