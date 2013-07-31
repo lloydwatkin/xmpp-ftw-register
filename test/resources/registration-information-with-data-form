@@ -1,0 +1,19 @@
+<iq type="result" id="1">
+  <query xmlns="jabber:iq:register">
+    <instructions>These are instructions</instructions>
+    <x xmlns="jabber:x:data" type="form">
+      <title>Registration</title>
+      <instructions>Registration instructions</instructions>
+      <field type="hidden" var="FORM_TYPE">
+        <value>jabber:iq:register</value>
+      </field>
+      <field type="text-single" label="Name" var="name">
+        <required/>
+      </field>
+      <field type="list-single" label="Art thou Romeo?" var="x-romeo">
+        <option label="Y"><value>Y</value></option>
+        <option label="N"><value>N</value></option>
+      </field>
+    </x>
+  </query>
+</iq>
