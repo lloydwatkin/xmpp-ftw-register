@@ -156,6 +156,40 @@ describe('Register', function() {
             }
             socket.emit('xmpp.register.get', request, callback)
         })
+        
+        it('Handles registration get information with data forms', function(done) {
+            xmpp.once('stanza', function(stanza) {
+                manager.makeCallback(
+                    helper.getStanza('registration-information-with-data-form')
+                )
+            })
+            var callback = function(error, data) {
+                should.not.exist(error)
+                data.instructions.should.equal('These are instructions')
+                data.form.should.exist
+                data.form.title.should.equal('Registration')
+                data.form.instructions.should.equal('Registration instructions')
+                
+                data.form.fields.length.should.equal(2)
+                data.form.fields[0].var.should.equal('name')
+                data.form.fields[0].type.should.equal('text-single')
+                data.form.fields[0].required.should.be.true
+                data.form.fields[0].label.should.equal('Name')
+                data.form.fields[1].var.should.equal('x-romeo')
+                data.form.fields[1].type.should.equal('list-single')
+                data.form.fields[1].required.should.be.false
+                data.form.fields[1].label.should.equal('Art thou Romeo?')
+                data.form.fields[1].options.should.eql([
+                  { value: 'Y', label: 'Y' },
+                  { value: 'N', label: 'N' }
+                ])
+                done()
+            }
+            var request = {
+                to: 'shakespeare.lit'
+            }
+            socket.emit('xmpp.register.get', request, callback)
+        })
 
     })
     
