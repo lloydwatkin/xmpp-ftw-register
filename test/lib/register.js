@@ -498,6 +498,86 @@ describe('Register', function() {
             }
             socket.emit('xmpp.register.unregister', request, callback)
         })
+
+        it('Handles unregister error with data form', function(done) {
+            xmpp.once('stanza', function(stanza) {
+                manager.makeCallback(helper.getStanza('unregister-error'))
+            })
+            var callback = function(error, success) {
+                should.not.exist(success)
+                error.type.should.equal('cancel')
+                error.condition.should.equal('not-allowed')
+                error.form.should.exist
+                error.form.title.should.equal('Cancel')
+                error.form.instructions.should.equal('Unregister Instructions')
+                error.form.fields.length.should.equal(1)
+                error.form.fields[0].var.should.equal('username')
+                error.form.fields[0].label.should.equal('Username')
+                error.form.fields[0].type.should.equal('text-single')
+                error.form.fields[0].required.should.be.true
+                done()
+            }
+            var request = {
+                to: 'shakespeare.lit'
+            }
+            socket.emit('xmpp.register.unregister', request, callback)
+        })
+
+        it('Sends expected stanza with data form', function(done) {
+            var request = {
+                to: 'shakespeare.lit',
+                form: [
+                    { var: 'field-name1', value: 'field-value1' }
+                ]
+            }
+            xmpp.once('stanza', function(stanza) {
+                stanza.is('iq').should.be.true
+                stanza.attrs.to.should.equal(request.to)
+                stanza.attrs.id.should.exist
+                stanza.attrs.type.should.equal('set')
+                var query = stanza.getChild('query', register.NS)
+                query.should.exist
+                should.not.exist(query.getChild('remove'))
+
+                var x = query.getChild('x', dataForm.NS)
+                x.should.exist
+                x.children.length.should.equal(2)
+                x.children[0].name.should.equal('field')
+                x.children[0].attrs.type.should.equal('hidden')
+                x.children[0].attrs.var.should.equal('FORM_TYPE')
+                x.children[0].getChildText('value')
+                    .should.equal(register.NS_CANCEL)
+                x.children[1].name.should.equal('field')
+                x.children[1].attrs.var.should.equal('field-name1')
+                x.children[1].getChildText('value')
+                    .should.equal('field-value1')
+                done()
+            })
+            socket.emit(
+                'xmpp.register.unregister',
+                request,
+                function() {}
+            )
+        })
+
+        it('Errors with unparsable data form', function(done) {
+            var callback = function(error, success) {
+                should.not.exist(success)
+                error.should.eql({
+                    type: 'modify',
+                    condition: 'client-error',
+                    description: 'Badly formatted data form',
+                    request: request
+                })
+                done()
+            }
+            var request = {
+                to: 'shakespeare.lit',
+                form: {}
+            }
+            socket.emit('xmpp.register.unregister', request, callback)
+
+        })
     
     })
 
