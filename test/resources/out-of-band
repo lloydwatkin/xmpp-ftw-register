@@ -1,0 +1,9 @@
+<iq type="result" id="1">
+  <query xmlns="jabber:iq:register">
+    <instructions>These are instructions</instructions>
+    <x xmlns="jabber:x:oob">
+        <url>http://shakespeare.lit</url>
+        <desc>Head here to register</desc>
+    </x>
+  </query>
+</iq>

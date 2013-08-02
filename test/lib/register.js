@@ -191,6 +191,25 @@ describe('Register', function() {
             }
             socket.emit('xmpp.register.get', request, callback)
         })
+        
+        it('Handles OOB response', function(done) {
+            xmpp.once('stanza', function(stanza) {
+                manager.makeCallback(
+                    helper.getStanza('out-of-band')
+                )
+            })
+            var callback = function(error, data) {
+                should.not.exist(error)
+                data.instructions.should.equal('These are instructions')
+                data.oob.url.should.equal('http://shakespeare.lit')
+                data.oob.description.should.equal('Head here to register')
+                done()
+            }
+            var request = {
+                to: 'shakespeare.lit'
+            }
+            socket.emit('xmpp.register.get', request, callback)
+        })
 
     })
     
@@ -387,7 +406,6 @@ describe('Register', function() {
             }
             socket.emit('xmpp.register.set', request, function() {})
         })
-
     })
 
     describe('Unregister', function() {
@@ -576,7 +594,6 @@ describe('Register', function() {
                 form: {}
             }
             socket.emit('xmpp.register.unregister', request, callback)
-
         })
     
     })
