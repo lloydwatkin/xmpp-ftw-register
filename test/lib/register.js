@@ -87,7 +87,7 @@ describe('Register', function() {
                 stanza.attrs.to.should.equal(request.to)
                 stanza.attrs.id.should.exist
                 stanza.attrs.type.should.equal('get')
-                stanza.getChild('register', register.NS)
+                stanza.getChild('query', register.NS)
                     .should.exist
                 done()
             })
