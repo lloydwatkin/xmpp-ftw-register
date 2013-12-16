@@ -1,8 +1,8 @@
 var should   = require('should')
-  , Register = require('../../lib/register')
+  , Register = require('../../index')
   , ltx      = require('ltx')
   , helper   = require('../helper')
-  , dataForm = require('xmpp-ftw/lib/utils/xep-0004')
+  , dataForm = require('xmpp-ftw').utils['xep-0004']
 
 describe('Register', function() {
 
@@ -56,7 +56,7 @@ describe('Register', function() {
             })
             socket.emit('xmpp.register.get', {}, true)
         })
- 
+
         it('Errors if missing \'to\' key', function(done) {
             var request = {}
             xmpp.once('stanza', function() {
@@ -156,7 +156,7 @@ describe('Register', function() {
             }
             socket.emit('xmpp.register.get', request, callback)
         })
-        
+
         it('Handles registration get with data form', function(done) {
             xmpp.once('stanza', function(stanza) {
                 manager.makeCallback(
@@ -170,7 +170,7 @@ describe('Register', function() {
                 data.form.title.should.equal('Registration')
                 data.form.instructions
                     .should.equal('Registration instructions')
-                
+
                 data.form.fields.length.should.equal(2)
                 data.form.fields[0].var.should.equal('name')
                 data.form.fields[0].type.should.equal('text-single')
@@ -191,7 +191,7 @@ describe('Register', function() {
             }
             socket.emit('xmpp.register.get', request, callback)
         })
-        
+
         it('Handles OOB response', function(done) {
             xmpp.once('stanza', function(stanza) {
                 manager.makeCallback(
@@ -212,7 +212,7 @@ describe('Register', function() {
         })
 
     })
-    
+
     describe('Can register', function() {
 
         it('Errors when no callback provided', function(done) {
@@ -244,7 +244,7 @@ describe('Register', function() {
             })
             socket.emit('xmpp.register.set', {}, true)
         })
- 
+
         it('Errors if missing \'to\' key', function(done) {
             var request = {}
             xmpp.once('stanza', function() {
@@ -285,7 +285,7 @@ describe('Register', function() {
                 function() {}
             )
         })
-        
+
         it('Sends expected stanza with fields', function(done) {
             var request = {
                 to: 'shakespeare.lit',
@@ -346,7 +346,7 @@ describe('Register', function() {
             }
             socket.emit('xmpp.register.set', request, callback)
         })
-        
+
         it('Errors with invalid data form', function(done) {
             var callback = function(error, success) {
                 should.not.exist(success)
@@ -360,7 +360,7 @@ describe('Register', function() {
             }
             var request = {
                 to: 'shakespeare.lit',
-                form: {} 
+                form: {}
             }
             socket.emit('xmpp.register.set', request, callback)
         })
@@ -370,38 +370,38 @@ describe('Register', function() {
                 stanza.is('iq').should.be.true
                 stanza.attrs.type.should.equal('set')
                 stanza.attrs.to.should.equal(request.to)
-                
+
                 var query = stanza.getChild('query', register.NS)
                 query.should.exist
-                
+
                 var x = query.getChild('x', dataForm.NS)
 
                 x.should.exist
                 x.attrs.type.should.exist
                 x.children.length.should.equal(request.form.length + 1)
-                
+
                 x.children[0].name.should.equal('field')
                 x.children[0].attrs.var.should.equal('FORM_TYPE')
                 x.children[0].attrs.type.should.equal('hidden')
                 x.children[0].getChildText('value').should.equal(register.NS)
-                
+
                 x.children[1].name.should.equal('field')
                 x.children[1].attrs.var.should.equal('field-type1')
                 x.children[1].getChildText('value')
                     .should.equal('field-value1')
-                
+
                 x.children[2].name.should.equal('field')
                 x.children[2].attrs.var.should.equal('field-type2')
                 x.children[2].getChildText('value')
                     .should.equal('field-value2')
-                
+
                 done()
             })
             var request = {
                 to: 'shakespeare.lit',
                 form: [
-                    { var: 'field-type1', value: 'field-value1' }, 
-                    { var: 'field-type2', value: 'field-value2' } 
+                    { var: 'field-type1', value: 'field-value1' },
+                    { var: 'field-type2', value: 'field-value2' }
                 ]
             }
             socket.emit('xmpp.register.set', request, function() {})
@@ -439,7 +439,7 @@ describe('Register', function() {
             })
             socket.emit('xmpp.register.unregister', {}, true)
         })
- 
+
         it('Errors if missing \'to\' key', function(done) {
             var request = {}
             xmpp.once('stanza', function() {
@@ -595,9 +595,9 @@ describe('Register', function() {
             }
             socket.emit('xmpp.register.unregister', request, callback)
         })
-    
+
     })
-    
+
     describe('Can change password', function() {
 
         it('Errors when no callback provided', function(done) {
@@ -629,7 +629,7 @@ describe('Register', function() {
             })
             socket.emit('xmpp.register.password', {}, true)
         })
- 
+
         it('Errors if missing \'to\' key', function(done) {
             var request = {}
             xmpp.once('stanza', function() {
@@ -670,7 +670,7 @@ describe('Register', function() {
                 function() {}
             )
         })
-        
+
         it('Sends expected stanza with fields', function(done) {
             var request = {
                 to: 'shakespeare.lit',
@@ -723,23 +723,23 @@ describe('Register', function() {
                 should.not.exist(success)
                 error.type.should.equal('modify')
                 error.condition.should.equal('not-authorized')
-                
+
                 error.form.should.exist
                 error.form.fields.length.should.equal(2)
                 error.form.title.should.equal('Password change')
                 error.form.instructions
                     .should.equal('Password change instructions')
-                
+
                 error.form.fields[0].var.should.equal('name')
                 error.form.fields[0].type.should.equal('text-single')
                 error.form.fields[0].required.should.be.true
                 error.form.fields[0].label.should.equal('Name')
-                
+
                 error.form.fields[1].var.should.equal('x-romeo')
                 error.form.fields[1].type.should.equal('list-single')
                 error.form.fields[1].required.should.be.false
                 error.form.fields[1].label.should.equal('Art thou Romeo?')
-                
+
                 done()
             }
             var request = {
@@ -763,7 +763,7 @@ describe('Register', function() {
             }
             socket.emit('xmpp.register.password', request, callback)
         })
-        
+
         it('Errors with invalid data form', function(done) {
             var callback = function(error, success) {
                 should.not.exist(success)
@@ -777,7 +777,7 @@ describe('Register', function() {
             }
             var request = {
                 to: 'shakespeare.lit',
-                form: {} 
+                form: {}
             }
             socket.emit('xmpp.register.password', request, callback)
         })
@@ -787,43 +787,43 @@ describe('Register', function() {
                 stanza.is('iq').should.be.true
                 stanza.attrs.type.should.equal('set')
                 stanza.attrs.to.should.equal(request.to)
-                
+
                 var query = stanza.getChild('query', register.NS)
                 query.should.exist
-                
+
                 var x = query.getChild('x', dataForm.NS)
 
                 x.should.exist
                 x.attrs.type.should.exist
                 x.children.length.should.equal(request.form.length + 1)
-                
+
                 x.children[0].name.should.equal('field')
                 x.children[0].attrs.var.should.equal('FORM_TYPE')
                 x.children[0].attrs.type.should.equal('hidden')
                 x.children[0].getChildText('value')
                     .should.equal(register.NS_CHANGE_PASSWORD)
-                
+
                 x.children[1].name.should.equal('field')
                 x.children[1].attrs.var.should.equal('field-type1')
                 x.children[1].getChildText('value')
                     .should.equal('field-value1')
-                
+
                 x.children[2].name.should.equal('field')
                 x.children[2].attrs.var.should.equal('field-type2')
                 x.children[2].getChildText('value')
                     .should.equal('field-value2')
-                
+
                 done()
             })
             var request = {
                 to: 'shakespeare.lit',
                 form: [
-                    { var: 'field-type1', value: 'field-value1' }, 
-                    { var: 'field-type2', value: 'field-value2' } 
+                    { var: 'field-type1', value: 'field-value1' },
+                    { var: 'field-type2', value: 'field-value2' }
                 ]
             }
             socket.emit('xmpp.register.password', request, function() {})
         })
     })
-    
+
 })
