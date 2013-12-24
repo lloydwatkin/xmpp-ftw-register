@@ -1,9 +1,11 @@
+'use strict';
+
 var should   = require('should')
   , Register = require('../../index')
-  , ltx      = require('ltx')
   , helper   = require('../helper')
   , dataForm = require('xmpp-ftw').utils['xep-0004']
 
+/* jshint -W030 */
 describe('Register', function() {
 
     var register, socket, xmpp, manager
@@ -34,7 +36,7 @@ describe('Register', function() {
             socket.once('xmpp.error.client', function(error) {
                 error.type.should.equal('modify')
                 error.condition.should.equal('client-error')
-                error.description.should.equal("Missing callback")
+                error.description.should.equal('Missing callback')
                 error.request.should.eql({})
                 xmpp.removeAllListeners('stanza')
                 done()
@@ -49,7 +51,7 @@ describe('Register', function() {
             socket.once('xmpp.error.client', function(error) {
                 error.type.should.equal('modify')
                 error.condition.should.equal('client-error')
-                error.description.should.equal("Missing callback")
+                error.description.should.equal('Missing callback')
                 error.request.should.eql({})
                 xmpp.removeAllListeners('stanza')
                 done()
@@ -66,7 +68,7 @@ describe('Register', function() {
                 should.not.exist(success)
                 error.type.should.equal('modify')
                 error.condition.should.equal('client-error')
-                error.description.should.equal("Missing 'to' key")
+                error.description.should.equal('Missing \'to\' key')
                 error.request.should.eql(request)
                 xmpp.removeAllListeners('stanza')
                 done()
@@ -99,7 +101,7 @@ describe('Register', function() {
         })
 
         it('Handles error response stanza', function(done) {
-            xmpp.once('stanza', function(stanza) {
+            xmpp.once('stanza', function() {
                 manager.makeCallback(helper.getStanza('iq-error'))
             })
             var callback = function(error, success) {
@@ -117,7 +119,7 @@ describe('Register', function() {
         })
 
         it('Returns registration information', function(done) {
-            xmpp.once('stanza', function(stanza) {
+            xmpp.once('stanza', function() {
                 manager.makeCallback(
                     helper.getStanza('registration-information')
                 )
@@ -137,7 +139,7 @@ describe('Register', function() {
         })
 
         it('Handles registered entity', function(done) {
-            xmpp.once('stanza', function(stanza) {
+            xmpp.once('stanza', function() {
                 manager.makeCallback(
                     helper.getStanza('registered-entity')
                 )
@@ -158,7 +160,7 @@ describe('Register', function() {
         })
 
         it('Handles registration get with data form', function(done) {
-            xmpp.once('stanza', function(stanza) {
+            xmpp.once('stanza', function() {
                 manager.makeCallback(
                     helper.getStanza('registration-information-with-data-form')
                 )
@@ -181,8 +183,8 @@ describe('Register', function() {
                 data.form.fields[1].required.should.be.false
                 data.form.fields[1].label.should.equal('Art thou Romeo?')
                 data.form.fields[1].options.should.eql([
-                  { value: 'Y', label: 'Y' },
-                  { value: 'N', label: 'N' }
+                    { value: 'Y', label: 'Y' },
+                    { value: 'N', label: 'N' }
                 ])
                 done()
             }
@@ -193,7 +195,7 @@ describe('Register', function() {
         })
 
         it('Handles OOB response', function(done) {
-            xmpp.once('stanza', function(stanza) {
+            xmpp.once('stanza', function() {
                 manager.makeCallback(
                     helper.getStanza('out-of-band')
                 )
@@ -222,7 +224,7 @@ describe('Register', function() {
             socket.once('xmpp.error.client', function(error) {
                 error.type.should.equal('modify')
                 error.condition.should.equal('client-error')
-                error.description.should.equal("Missing callback")
+                error.description.should.equal('Missing callback')
                 error.request.should.eql({})
                 xmpp.removeAllListeners('stanza')
                 done()
@@ -237,7 +239,7 @@ describe('Register', function() {
             socket.once('xmpp.error.client', function(error) {
                 error.type.should.equal('modify')
                 error.condition.should.equal('client-error')
-                error.description.should.equal("Missing callback")
+                error.description.should.equal('Missing callback')
                 error.request.should.eql({})
                 xmpp.removeAllListeners('stanza')
                 done()
@@ -254,7 +256,7 @@ describe('Register', function() {
                 should.not.exist(success)
                 error.type.should.equal('modify')
                 error.condition.should.equal('client-error')
-                error.description.should.equal("Missing 'to' key")
+                error.description.should.equal('Missing \'to\' key')
                 error.request.should.eql(request)
                 xmpp.removeAllListeners('stanza')
                 done()
@@ -313,7 +315,7 @@ describe('Register', function() {
         })
 
         it('Handles error response stanza', function(done) {
-            xmpp.once('stanza', function(stanza) {
+            xmpp.once('stanza', function() {
                 manager.makeCallback(helper.getStanza('iq-error'))
             })
             var callback = function(error, success) {
@@ -331,7 +333,7 @@ describe('Register', function() {
         })
 
         it('Confirms expected registration', function(done) {
-            xmpp.once('stanza', function(stanza) {
+            xmpp.once('stanza', function() {
                 manager.makeCallback(
                     helper.getStanza('iq-result')
                 )
@@ -417,7 +419,7 @@ describe('Register', function() {
             socket.once('xmpp.error.client', function(error) {
                 error.type.should.equal('modify')
                 error.condition.should.equal('client-error')
-                error.description.should.equal("Missing callback")
+                error.description.should.equal('Missing callback')
                 error.request.should.eql({})
                 xmpp.removeAllListeners('stanza')
                 done()
@@ -432,7 +434,7 @@ describe('Register', function() {
             socket.once('xmpp.error.client', function(error) {
                 error.type.should.equal('modify')
                 error.condition.should.equal('client-error')
-                error.description.should.equal("Missing callback")
+                error.description.should.equal('Missing callback')
                 error.request.should.eql({})
                 xmpp.removeAllListeners('stanza')
                 done()
@@ -449,7 +451,7 @@ describe('Register', function() {
                 should.not.exist(success)
                 error.type.should.equal('modify')
                 error.condition.should.equal('client-error')
-                error.description.should.equal("Missing 'to' key")
+                error.description.should.equal('Missing \'to\' key')
                 error.request.should.eql(request)
                 xmpp.removeAllListeners('stanza')
                 done()
@@ -483,7 +485,7 @@ describe('Register', function() {
         })
 
         it('Handles error response stanza', function(done) {
-            xmpp.once('stanza', function(stanza) {
+            xmpp.once('stanza', function() {
                 manager.makeCallback(helper.getStanza('iq-error'))
             })
             var callback = function(error, success) {
@@ -501,7 +503,7 @@ describe('Register', function() {
         })
 
         it('Returns success', function(done) {
-            xmpp.once('stanza', function(stanza) {
+            xmpp.once('stanza', function() {
                 manager.makeCallback(
                     helper.getStanza('iq-result')
                 )
@@ -518,7 +520,7 @@ describe('Register', function() {
         })
 
         it('Handles unregister error with data form', function(done) {
-            xmpp.once('stanza', function(stanza) {
+            xmpp.once('stanza', function() {
                 manager.makeCallback(helper.getStanza('unregister-error'))
             })
             var callback = function(error, success) {
@@ -607,7 +609,7 @@ describe('Register', function() {
             socket.once('xmpp.error.client', function(error) {
                 error.type.should.equal('modify')
                 error.condition.should.equal('client-error')
-                error.description.should.equal("Missing callback")
+                error.description.should.equal('Missing callback')
                 error.request.should.eql({})
                 xmpp.removeAllListeners('stanza')
                 done()
@@ -622,7 +624,7 @@ describe('Register', function() {
             socket.once('xmpp.error.client', function(error) {
                 error.type.should.equal('modify')
                 error.condition.should.equal('client-error')
-                error.description.should.equal("Missing callback")
+                error.description.should.equal('Missing callback')
                 error.request.should.eql({})
                 xmpp.removeAllListeners('stanza')
                 done()
@@ -639,7 +641,7 @@ describe('Register', function() {
                 should.not.exist(success)
                 error.type.should.equal('modify')
                 error.condition.should.equal('client-error')
-                error.description.should.equal("Missing 'to' key")
+                error.description.should.equal('Missing \'to\' key')
                 error.request.should.eql(request)
                 xmpp.removeAllListeners('stanza')
                 done()
@@ -696,7 +698,7 @@ describe('Register', function() {
         })
 
         it('Handles error response stanza', function(done) {
-            xmpp.once('stanza', function(stanza) {
+            xmpp.once('stanza', function() {
                 manager.makeCallback(helper.getStanza('iq-error'))
             })
             var callback = function(error, success) {
@@ -714,7 +716,7 @@ describe('Register', function() {
         })
 
         it('Handles error response stanza with form', function(done) {
-            xmpp.once('stanza', function(stanza) {
+            xmpp.once('stanza', function() {
                 manager.makeCallback(
                   helper.getStanza('change-password-data-form')
                 )
@@ -748,7 +750,7 @@ describe('Register', function() {
             socket.emit('xmpp.register.password', request, callback)
         })
         it('Confirms successful password change', function(done) {
-            xmpp.once('stanza', function(stanza) {
+            xmpp.once('stanza', function() {
                 manager.makeCallback(
                     helper.getStanza('iq-result')
                 )
