@@ -11,8 +11,8 @@ describe('Register', function() {
     var register, socket, xmpp, manager
 
     before(function() {
-        socket = new helper.Eventer()
-        xmpp = new helper.Eventer()
+        socket = new helper.SocketEventer()
+        xmpp = new helper.XmppEventer()
         manager = {
             socket: socket,
             client: xmpp,
@@ -24,6 +24,12 @@ describe('Register', function() {
             }
         }
         register = new Register()
+        register.init(manager)
+    })
+
+    beforeEach(function() {
+        socket.removeAllListeners()
+        xmpp.removeAllListeners()
         register.init(manager)
     })
 
@@ -41,7 +47,7 @@ describe('Register', function() {
                 xmpp.removeAllListeners('stanza')
                 done()
             })
-            socket.emit('xmpp.register.get', {})
+            socket.send('xmpp.register.get', {})
         })
 
         it('Errors when non-function callback provided', function(done) {
@@ -56,7 +62,7 @@ describe('Register', function() {
                 xmpp.removeAllListeners('stanza')
                 done()
             })
-            socket.emit('xmpp.register.get', {}, true)
+            socket.send('xmpp.register.get', {}, true)
         })
 
         it('Errors if missing \'to\' key', function(done) {
@@ -73,7 +79,7 @@ describe('Register', function() {
                 xmpp.removeAllListeners('stanza')
                 done()
             }
-            socket.emit(
+            socket.send(
                 'xmpp.register.get',
                 request,
                 callback
@@ -93,7 +99,7 @@ describe('Register', function() {
                     .should.exist
                 done()
             })
-            socket.emit(
+            socket.send(
                 'xmpp.register.get',
                 request,
                 function() {}
@@ -115,7 +121,7 @@ describe('Register', function() {
             var request = {
                 to: 'shakespeare.lit'
             }
-            socket.emit('xmpp.register.get', request, callback)
+            socket.send('xmpp.register.get', request, callback)
         })
 
         it('Returns registration information', function(done) {
@@ -135,7 +141,7 @@ describe('Register', function() {
             var request = {
                 to: 'shakespeare.lit'
             }
-            socket.emit('xmpp.register.get', request, callback)
+            socket.send('xmpp.register.get', request, callback)
         })
 
         it('Handles registered entity', function(done) {
@@ -156,7 +162,7 @@ describe('Register', function() {
             var request = {
                 to: 'shakespeare.lit'
             }
-            socket.emit('xmpp.register.get', request, callback)
+            socket.send('xmpp.register.get', request, callback)
         })
 
         it('Handles registration get with data form', function(done) {
@@ -191,7 +197,7 @@ describe('Register', function() {
             var request = {
                 to: 'shakespeare.lit'
             }
-            socket.emit('xmpp.register.get', request, callback)
+            socket.send('xmpp.register.get', request, callback)
         })
 
         it('Handles OOB response', function(done) {
@@ -210,7 +216,7 @@ describe('Register', function() {
             var request = {
                 to: 'shakespeare.lit'
             }
-            socket.emit('xmpp.register.get', request, callback)
+            socket.send('xmpp.register.get', request, callback)
         })
 
     })
@@ -229,7 +235,7 @@ describe('Register', function() {
                 xmpp.removeAllListeners('stanza')
                 done()
             })
-            socket.emit('xmpp.register.set', {})
+            socket.send('xmpp.register.set', {})
         })
 
         it('Errors when non-function callback provided', function(done) {
@@ -244,7 +250,7 @@ describe('Register', function() {
                 xmpp.removeAllListeners('stanza')
                 done()
             })
-            socket.emit('xmpp.register.set', {}, true)
+            socket.send('xmpp.register.set', {}, true)
         })
 
         it('Errors if missing \'to\' key', function(done) {
@@ -261,7 +267,7 @@ describe('Register', function() {
                 xmpp.removeAllListeners('stanza')
                 done()
             }
-            socket.emit(
+            socket.send(
                 'xmpp.register.set',
                 request,
                 callback
@@ -281,7 +287,7 @@ describe('Register', function() {
                     .should.exist
                 done()
             })
-            socket.emit(
+            socket.send(
                 'xmpp.register.set',
                 request,
                 function() {}
@@ -307,7 +313,7 @@ describe('Register', function() {
                 query.getChildText('email').should.equal(request.email)
                 done()
             })
-            socket.emit(
+            socket.send(
                 'xmpp.register.set',
                 request,
                 function() {}
@@ -329,7 +335,7 @@ describe('Register', function() {
             var request = {
                 to: 'shakespeare.lit'
             }
-            socket.emit('xmpp.register.set', request, callback)
+            socket.send('xmpp.register.set', request, callback)
         })
 
         it('Confirms expected registration', function(done) {
@@ -346,7 +352,7 @@ describe('Register', function() {
             var request = {
                 to: 'shakespeare.lit'
             }
-            socket.emit('xmpp.register.set', request, callback)
+            socket.send('xmpp.register.set', request, callback)
         })
 
         it('Errors with invalid data form', function(done) {
@@ -364,7 +370,7 @@ describe('Register', function() {
                 to: 'shakespeare.lit',
                 form: {}
             }
-            socket.emit('xmpp.register.set', request, callback)
+            socket.send('xmpp.register.set', request, callback)
         })
 
         it('Sends expected stanza with data form', function(done) {
@@ -406,7 +412,7 @@ describe('Register', function() {
                     { var: 'field-type2', value: 'field-value2' }
                 ]
             }
-            socket.emit('xmpp.register.set', request, function() {})
+            socket.send('xmpp.register.set', request, function() {})
         })
     })
 
@@ -424,7 +430,7 @@ describe('Register', function() {
                 xmpp.removeAllListeners('stanza')
                 done()
             })
-            socket.emit('xmpp.register.unregister', {})
+            socket.send('xmpp.register.unregister', {})
         })
 
         it('Errors when non-function callback provided', function(done) {
@@ -439,7 +445,7 @@ describe('Register', function() {
                 xmpp.removeAllListeners('stanza')
                 done()
             })
-            socket.emit('xmpp.register.unregister', {}, true)
+            socket.send('xmpp.register.unregister', {}, true)
         })
 
         it('Errors if missing \'to\' key', function(done) {
@@ -456,7 +462,7 @@ describe('Register', function() {
                 xmpp.removeAllListeners('stanza')
                 done()
             }
-            socket.emit(
+            socket.send(
                 'xmpp.register.unregister',
                 request,
                 callback
@@ -477,7 +483,7 @@ describe('Register', function() {
                 query.getChild('remove').should.exist
                 done()
             })
-            socket.emit(
+            socket.send(
                 'xmpp.register.unregister',
                 request,
                 function() {}
@@ -499,7 +505,7 @@ describe('Register', function() {
             var request = {
                 to: 'shakespeare.lit'
             }
-            socket.emit('xmpp.register.unregister', request, callback)
+            socket.send('xmpp.register.unregister', request, callback)
         })
 
         it('Returns success', function(done) {
@@ -516,7 +522,7 @@ describe('Register', function() {
             var request = {
                 to: 'shakespeare.lit'
             }
-            socket.emit('xmpp.register.unregister', request, callback)
+            socket.send('xmpp.register.unregister', request, callback)
         })
 
         it('Handles unregister error with data form', function(done) {
@@ -540,7 +546,7 @@ describe('Register', function() {
             var request = {
                 to: 'shakespeare.lit'
             }
-            socket.emit('xmpp.register.unregister', request, callback)
+            socket.send('xmpp.register.unregister', request, callback)
         })
 
         it('Sends expected stanza with data form', function(done) {
@@ -573,7 +579,7 @@ describe('Register', function() {
                     .should.equal('field-value1')
                 done()
             })
-            socket.emit(
+            socket.send(
                 'xmpp.register.unregister',
                 request,
                 function() {}
@@ -595,7 +601,7 @@ describe('Register', function() {
                 to: 'shakespeare.lit',
                 form: {}
             }
-            socket.emit('xmpp.register.unregister', request, callback)
+            socket.send('xmpp.register.unregister', request, callback)
         })
 
     })
@@ -614,7 +620,7 @@ describe('Register', function() {
                 xmpp.removeAllListeners('stanza')
                 done()
             })
-            socket.emit('xmpp.register.password', {})
+            socket.send('xmpp.register.password', {})
         })
 
         it('Errors when non-function callback provided', function(done) {
@@ -629,7 +635,7 @@ describe('Register', function() {
                 xmpp.removeAllListeners('stanza')
                 done()
             })
-            socket.emit('xmpp.register.password', {}, true)
+            socket.send('xmpp.register.password', {}, true)
         })
 
         it('Errors if missing \'to\' key', function(done) {
@@ -646,7 +652,7 @@ describe('Register', function() {
                 xmpp.removeAllListeners('stanza')
                 done()
             }
-            socket.emit(
+            socket.send(
                 'xmpp.register.password',
                 request,
                 callback
@@ -666,7 +672,7 @@ describe('Register', function() {
                     .should.exist
                 done()
             })
-            socket.emit(
+            socket.send(
                 'xmpp.register.password',
                 request,
                 function() {}
@@ -690,7 +696,7 @@ describe('Register', function() {
                 query.getChildText('password').should.equal(request.password)
                 done()
             })
-            socket.emit(
+            socket.send(
                 'xmpp.register.password',
                 request,
                 function() {}
@@ -712,7 +718,7 @@ describe('Register', function() {
             var request = {
                 to: 'shakespeare.lit'
             }
-            socket.emit('xmpp.register.password', request, callback)
+            socket.send('xmpp.register.password', request, callback)
         })
 
         it('Handles error response stanza with form', function(done) {
@@ -747,7 +753,7 @@ describe('Register', function() {
             var request = {
                 to: 'shakespeare.lit'
             }
-            socket.emit('xmpp.register.password', request, callback)
+            socket.send('xmpp.register.password', request, callback)
         })
         it('Confirms successful password change', function(done) {
             xmpp.once('stanza', function() {
@@ -763,7 +769,7 @@ describe('Register', function() {
             var request = {
                 to: 'shakespeare.lit'
             }
-            socket.emit('xmpp.register.password', request, callback)
+            socket.send('xmpp.register.password', request, callback)
         })
 
         it('Errors with invalid data form', function(done) {
@@ -781,7 +787,7 @@ describe('Register', function() {
                 to: 'shakespeare.lit',
                 form: {}
             }
-            socket.emit('xmpp.register.password', request, callback)
+            socket.send('xmpp.register.password', request, callback)
         })
 
         it('Sends expected stanza with data form', function(done) {
@@ -824,7 +830,7 @@ describe('Register', function() {
                     { var: 'field-type2', value: 'field-value2' }
                 ]
             }
-            socket.emit('xmpp.register.password', request, function() {})
+            socket.send('xmpp.register.password', request, function() {})
         })
     })
 
