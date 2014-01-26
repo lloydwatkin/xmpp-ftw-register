@@ -186,7 +186,6 @@ describe('Register', function() {
                 data.form.fields[0].label.should.equal('Name')
                 data.form.fields[1].var.should.equal('x-romeo')
                 data.form.fields[1].type.should.equal('list-single')
-                data.form.fields[1].required.should.be.false
                 data.form.fields[1].label.should.equal('Art thou Romeo?')
                 data.form.fields[1].options.should.eql([
                     { value: 'Y', label: 'Y' },
@@ -745,7 +744,6 @@ describe('Register', function() {
 
                 error.form.fields[1].var.should.equal('x-romeo')
                 error.form.fields[1].type.should.equal('list-single')
-                error.form.fields[1].required.should.be.false
                 error.form.fields[1].label.should.equal('Art thou Romeo?')
 
                 done()
