@@ -1,6 +1,6 @@
 {
   "name": "xmpp-ftw-register",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "In-band registration (XEP-0077) plugin for XMPP-FTW",
   "main": "index.js",
   "directories": {
@@ -29,7 +29,7 @@
   },
   "dependencies": {
     "ltx": "~0.3.3",
-    "xmpp-ftw": "1.X" 
+    "xmpp-ftw": "1.X"
   },
   "devDependencies": {
     "mocha": "~1.8.1",
