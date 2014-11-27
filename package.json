@@ -28,8 +28,8 @@
     "url": "https://github.com/xmpp-ftw/xmpp-ftw-register/issues"
   },
   "dependencies": {
+    "ltx": "^0.7.2",
     "xmpp-ftw": "1.X"
-    "ltx": "^0.5.2"
   },
   "devDependencies": {
     "coveralls": "^2.11.2",
