@@ -13,6 +13,8 @@ See the XMPP-FTW demo repository - https://github.com/xmpp-ftw/xmpp-ftw-demo
 
 [![Build Status](https://secure.travis-ci.org/xmpp-ftw/xmpp-ftw-register.png)](http://travis-ci.org/xmpp-ftw/xmpp-ftw-register)
 
+[![Coverage Status](https://img.shields.io/coveralls/xmpp-ftw/xmpp-ftw-register.svg)](https://coveralls.io/r/xmpp-ftw/xmpp-ftw-register)
+
 # Install
 
 ```
