@@ -35,6 +35,14 @@ describe('Register', function() {
         register.init(manager)
     })
 
+    it('Handles nothing', function() {
+        register.handles().should.be.false
+    })
+
+    it('Handle(s) nothing', function() {
+        register.handle().should.be.false
+    })
+
     describe('Get registration details', function() {
 
         it('Errors when no callback provided', function(done) {
