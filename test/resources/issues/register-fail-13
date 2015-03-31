@@ -1,0 +1,5 @@
+<iq id="1" type="error" to="user@anon.buddycloud.org/resource" from="buddycloud.org" xmlns:stream="http://etherx.jabber.org/streams">
+  <error type="cancel">
+    <service-unavailable xmlns="urn:ietf:params:xml:ns:xmpp-stanzas"/>
+  </error>
+</iq>
