@@ -729,6 +729,24 @@ describe('Register', function() {
             }
             socket.send('xmpp.register.password', request, callback)
         })
+        
+        it('Handles error response issue#13', function(done) {
+            xmpp.once('stanza', function() {
+                manager.makeCallback(helper.getStanza('issues/register-fail-13'))
+            })
+            var callback = function(error, success) {
+                should.not.exist(success)
+                error.should.eql({
+                    type: 'cancel',
+                    condition: 'service-unavailable'
+                })
+                done()
+            }
+            var request = {
+                to: 'shakespeare.lit'
+            }
+            socket.send('xmpp.register.password', request, callback)
+        })
 
         it('Handles error response stanza with form', function(done) {
             xmpp.once('stanza', function() {
