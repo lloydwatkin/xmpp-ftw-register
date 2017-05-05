@@ -1,6 +1,8 @@
 xmpp-ftw-register
 =================
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/xmpp-ftw/xmpp-ftw-register.svg)](https://greenkeeper.io/)
+
 An in-band registration (XEP-0077) plugin for XMPP-FTW.
 
 https://github.com/xmpp-ftw/xmpp-ftw.git
